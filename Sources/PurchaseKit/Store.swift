@@ -123,6 +123,9 @@ extension Store: SKProductsRequestDelegate {
 extension Store: SKPaymentTransactionObserver {
 
     public func paymentQueue(_ queue: SKPaymentQueue, updatedTransactions transactions: [SKPaymentTransaction]) {
+        /*
+         See: https://www.appcoda.com/in-app-purchases-guide/
+         */
         transactions.forEach { (transaction) in
             switch transaction.transactionState {
             case .purchased:
