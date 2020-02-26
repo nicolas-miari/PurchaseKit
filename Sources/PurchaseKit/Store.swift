@@ -125,26 +125,25 @@ extension Store: SKPaymentTransactionObserver {
     public func paymentQueue(_ queue: SKPaymentQueue, updatedTransactions transactions: [SKPaymentTransaction]) {
         transactions.forEach { (transaction) in
             switch transaction.transactionState {
-            case .purchasing:
-                break
-
             case .purchased:
                 observers.forEach {
                     $0.storeDidCompletePurchase(identifier: transaction.payment.productIdentifier)
                 }
+                queue.finishTransaction(transaction)
 
             case .restored:
                 observers.forEach {
                     $0.storeDidRestorePurchase(identifier: transaction.payment.productIdentifier)
                 }
+                queue.finishTransaction(transaction)
 
             case .failed:
-                queue.finishTransaction(transaction)
                 observers.forEach {
                     $0.storeDidFailPurchase(identifier: transaction.payment.productIdentifier, error: transaction.error)
                 }
+                queue.finishTransaction(transaction)
 
-            case .deferred:
+            case .deferred, .purchasing:
                 break
 
             @unknown default:

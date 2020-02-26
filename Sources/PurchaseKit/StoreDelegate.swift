@@ -33,6 +33,10 @@ public protocol StoreObserver: AnyObject {
 
     /**
      Observers can display error information to the user.
+
+     If the error passed as the second argument is of type `SKError` and the value of its `code` property
+     equals  `SKError.Code.paymentCancelled`, this means the user changed their mind in the last minute
+     before approving the payment, and no alert should be displayed.
      */
     func storeDidFailPurchase(identifier: String, error: Error?)
 
