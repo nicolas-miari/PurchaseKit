@@ -17,14 +17,20 @@ public final class Store: NSObject {
 
     public static let `default` = Store()
 
+    public struct ProductsResult {
+        let validIdentifiers: [String]
+        let invalidIdentifiers: [String]
+    }
+
     // MARK: -
 
     private let priceFormatter: NumberFormatter
-    private var ongoingProductRequest: SKProductsRequest?
-    private var completionHandler: ((Bool) -> Void)?
+
     private var products: [SKProduct] = []
 
     private var observers: [StoreObserver] = []
+
+    private var productsRequestHandler: ((ProductsResult) -> Void)?
 
     // MARK: - Initialization
 
@@ -55,7 +61,10 @@ public final class Store: NSObject {
      `storeDidLoadProducts(successfulIdentifiers:failedIdentifiers:)`. Based on the result, enable
      the store GUI or not.
      */
-    public func loadProducts(identifiers: [String]) {
+    public func loadProducts(identifiers: [String], completion: ((ProductsResult) -> Void)? = nil) {
+
+        self.productsRequestHandler = completion
+
         SKPaymentQueue.default().add(self)
         guard SKPaymentQueue.canMakePayments() else {
             return
@@ -111,9 +120,14 @@ extension Store: SKProductsRequestDelegate {
             let valid = response.products.map { $0.productIdentifier }
             let invalid = response.invalidProductIdentifiers
 
+            // Observer Interface
             self?.observers.forEach {
                 $0.storeDidLoadProducts(successfulIdentifiers: valid, failedIdentifiers: invalid)
             }
+
+            // Blocks Interface
+            let result = ProductsResult(validIdentifiers: valid, invalidIdentifiers: invalid)
+            self?.productsRequestHandler?(result)
         }
     }
 }
