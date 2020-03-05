@@ -18,8 +18,8 @@ public final class Store: NSObject {
     public static let `default` = Store()
 
     public struct ProductsResult {
-        let validIdentifiers: [String]
-        let invalidIdentifiers: [String]
+        public let validIdentifiers: [String]
+        public let invalidIdentifiers: [String]
     }
 
     // MARK: -
