@@ -44,7 +44,7 @@ public protocol StoreObserver: AnyObject {
 
 // MARK: - Default Implementations
 
-extension StoreObserver {
+public extension StoreObserver {
 
     func storeDidLoadProducts(successfulIdentifiers: [String], failedIdentifiers: [String]) {
         // (default implementation does nothing)
