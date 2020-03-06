@@ -41,3 +41,24 @@ public protocol StoreObserver: AnyObject {
     func storeDidFailPurchase(identifier: String, error: Error?)
 
 }
+
+// MARK: - Default Implementations
+
+extension StoreObserver {
+
+    func storeDidLoadProducts(successfulIdentifiers: [String], failedIdentifiers: [String]) {
+        // (default implementation does nothing)
+    }
+
+    func storeDidCompletePurchase(identifier: String) {
+        // (default implementation does nothing)
+    }
+
+    func storeDidRestorePurchase(identifier: String) {
+        // (default implementation does nothing)
+    }
+
+    func storeDidFailPurchase(identifier: String, error: Error?) {
+        // (default implementation does nothing)
+    }
+}
