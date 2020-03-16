@@ -6,7 +6,8 @@ import PackageDescription
 let package = Package(
     name: "PurchaseKit",
     platforms: [
-        .iOS(.v11) // (iOS 11.0)
+        .iOS(.v11), // (iOS 11.0)
+        .macOS(.v10_13) // (macOS 10.13 High Sierra)
     ],
     products: [
         // Products define the executables and libraries produced by a package, and make them visible to other packages.
